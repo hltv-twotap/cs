@@ -1,168 +1,223 @@
-<!--
-HLTV-style single-page profile for "TwoTap" (personal use)
-How to use:
-1. Save this file as `index.html` in a folder.
-2. Put your profile image in the same folder and name it `twotapmaior.png` (or change the image filename in the <img> below).
-3. Open `index.html` in your browser to preview locally.
-4. To publish: push the folder to GitHub and enable GitHub Pages, or upload to Netlify/Vercel — the page is static.
+<!DOCTYPE html>
 
-HLTV TwoTap Profile
--->
-
-<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TwoTap — Khronos E-Sports</title>
-  <style>
-    :root{--bg:#0b0b0d;--muted:#9aa3b2;--accent:#ff2fa6;--card:#0f1113;--glass:rgba(255,255,255,0.03)}
-    *{box-sizing:border-box;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif}
-    body{margin:0;background:linear-gradient(180deg,#050506 0%,#0c0d0f 100%);color:#e6eef6}
-    .container{max-width:1100px;margin:28px auto;padding:18px}
-    header{display:flex;align-items:center;gap:18px}
-    .avatar{width:140px;height:140px;border-radius:8px;overflow:hidden;background:var(--glass);flex:0 0 140px}
-    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
-    .title{display:flex;flex-direction:column}
-    .title h1{margin:0;font-size:28px;letter-spacing:0.5px}
-    .title .team{color:var(--accent);font-weight:700}
-    .meta{color:var(--muted);font-size:14px;margin-top:6px}
-
-    .top-row{display:flex;gap:18px;margin-top:18px}
-    .left,.right{background:var(--card);border-radius:10px;padding:16px}
-    .left{flex:0 0 360px}
-    .right{flex:1}
-
-    .stat{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .stat:last-child{border-bottom:0}
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>TwoTap — HLTV</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root{--bg:#0b0b0d;--panel:#111213;--muted:#9aa3b2;--accent:#00b4ff;--glass:rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Roboto,Arial, Helvetica, sans-serif;background:var(--bg);color:#e6eef6}
+    .topbar{background:#0f1113;border-bottom:1px solid rgba(255,255,255,0.03);padding:12px 20px;display:flex;align-items:center}
+    .topbar .logo{color:var(--accent);font-weight:700;font-size:20px}
+    .site-wrap{max-width:1120px;margin:20px auto;padding:0 16px}
+    .profile{display:flex;gap:20px}
+    .player-card{width:300px;background:var(--panel);border-radius:4px;padding:16px}
+    .player-avatar{width:100%;height:300px;background:linear-gradient(180deg,#0b0b0d,#121214);border-radius:4px;overflow:hidden}
+    .player-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .player-basic{margin-top:12px}
+    .player-basic h1{margin:6px 0 0;font-size:22px}
+    .player-basic .sub{color:var(--muted);font-size:13px;margin-top:6px}
+    .main {flex:1;margin-left:8px}
+    .stat-row{display:flex;gap:10px;margin-bottom:12px}
+    .stat{background:var(--panel);padding:12px;border-radius:4px;flex:1}
+    .stat .num{font-weight:700;font-size:20px}
     .stat .label{color:var(--muted);font-size:13px}
-    .stat .value{font-weight:700;font-size:18px}
-
-    .big-stat{display:flex;gap:12px;align-items:center;margin-top:12px}
-    .big-stat .kpi{background:linear-gradient(180deg,#0b1117,#071018);padding:12px;border-radius:8px;flex:1;text-align:center}
-    .kpi .num{font-size:22px;font-weight:800}
-    .kpi .sub{color:var(--muted);font-size:13px}
-
-    .wins-bar{height:12px;background:rgba(255,255,255,0.06);border-radius:999px;margin-top:10px;position:relative}
-    .wins-bar .fill{height:100%;border-radius:999px}
-
-    table{width:100%;border-collapse:collapse;margin-top:12px}
-    th,td{padding:10px;text-align:left;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .tabs{display:flex;gap:8px;margin:14px 0}
+    .tab{background:transparent;padding:8px 12px;border-radius:4px;border:1px solid rgba(255,255,255,0.02);color:var(--muted);cursor:pointer}
+    .tab.active{background:#0b0f14;color:#fff;border-color:rgba(0,180,255,0.25)}
+    .box{background:var(--panel);padding:14px;border-radius:4px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:14px}
     th{color:var(--muted);font-weight:600}
-
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:700}
-
-    footer{color:var(--muted);font-size:13px;margin-top:18px;text-align:center}
-
-    /* Responsive */
-    @media(max-width:900px){.container{padding:10px}.top-row{flex-direction:column}.left{width:100%;flex:unset}}
+    .trophies{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+    .trophy{display:flex;gap:12px;align-items:center;padding:10px;background:linear-gradient(180deg,#0d1012,#0b0b0d);border-radius:4px}
+    .trophy img{width:56px;height:56px}
+    footer{color:var(--muted);font-size:13px;text-align:center;margin:20px 0}
+    @media(max-width:900px){.profile{flex-direction:column}.player-card{width:100%}.main{margin-left:0}}
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="avatar"><img src="twotapmaior.png" alt="TwoTap"></div>
-      <div class="title">
-        <h1>TwoTap <span class="badge">@TwoTap</span></h1>
-        <div class="team">Khronos E-Sports — AWPer</div>
-        <div class="meta">Perfil do jogador TwoTap no HLTV — uso pessoal. KD: <strong>1.20</strong> • Nick: <strong>TwoTap</strong></div>
-      </div>
-    </header>
-
-    <div class="top-row">
-      <aside class="left">
-        <h3>Estatísticas gerais</h3>
-        <div class="stat"><div class="label">Partidas jogadas</div><div class="value">412</div></div>
-        <div class="stat"><div class="label">Kills / Mortes (KD)</div><div class="value">1.20</div></div>
-        <div class="stat"><div class="label">HS %</div><div class="value">28%</div></div>
-        <div class="stat"><div class="label">Win Rate</div><div class="value">62%</div></div>
-
-        <div class="big-stat">
-          <div class="kpi"><div class="num">1.20</div><div class="sub">Rating 2.0</div></div>
-          <div class="kpi"><div class="num">62%</div><div class="sub">Vitórias</div></div>
+<div class="topbar">
+<div class="site-wrap">
+<div class="logo">HLTV</div>
+</div>
+</div>
+<div class="site-wrap">
+<div class="profile">
+<aside class="player-card">
+<div class="player-avatar"><img alt="TwoTap" src="twotapmaior.png"/></div>
+<div class="player-basic">
+<h1>TwoTap</h1>
+<div class="sub">Khronos E-Sports • AWPer • Brasil</div>
+</div>
+<div class="box" style="margin-top:12px">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="font-weight:700">Rating 2.0</div>
+<div class="muted" style="color:var(--muted)">1.20</div>
+</div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<div style="flex:1;text-align:center"><div class="num">62%</div><div class="label">Win %</div></div>
+<div style="flex:1;text-align:center"><div class="num">28%</div><div class="label">HS%</div></div>
+<div style="flex:1;text-align:center"><div class="num">412</div><div class="label">Matches</div></div>
+</div>
+</div>
+<div class="box" style="margin-top:12px">
+<div style="font-weight:700;margin-bottom:8px">Troféus</div>
+<div class="trophies">
+    <div class="trophy">
+        <img alt="Microcamp Games 2017" src="microcamp_trophy.png"/>
+        <div>
+            <div style="font-weight:700">Microcamp Games 2017</div>
+            <div style="color:var(--muted);font-size:13px">1º Lugar — Microcamp</div>
         </div>
-
-        <h4 style="margin-top:12px">Tendência de vitórias</h4>
-        <div class="wins-bar" aria-hidden>
-          <div class="fill" style="width:62%;background:linear-gradient(90deg,var(--accent),#7a2bff)"></div>
-        </div>
-
-        <h4 style="margin-top:14px">Patrocinadores</h4>
-        <div style="display:flex;gap:8px;margin-top:6px"><div class="badge">betsafe</div><div class="badge">Samsung</div><div class="badge">Björn</div></div>
-
-        <h4 style="margin-top:14px">Papéis</h4>
-        <div style="color:var(--muted);font-size:14px;margin-top:6px">AWPer • Entry duplo ocasional • Clutch</div>
-
-      </aside>
-
-      <main class="right">
-        <section>
-          <h3>Últimas partidas</h3>
-          <table>
-            <thead><tr><th>Data</th><th>Evento</th><th>Oponente</th><th>Resultado</th><th>Rating</th></tr></thead>
-            <tbody id="matches">
-              <!-- JS will inject rows -->
-            </tbody>
-          </table>
-        </section>
-
-        <section style="margin-top:18px">
-          <h3>Participações em torneios (registradas)</h3>
-          <table>
-            <thead><tr><th>Ano</th><th>Torneio</th><th>Equipe</th><th>Colocação</th></tr></thead>
-            <tbody>
-              <tr><td>2017</td><td>Microcamp 2017</td><td>Khronos E-Sports</td><td>Top 1</td></tr>
-              <tr><td>2018</td><td>FACEIT League 2018</td><td>Khronos E-Sports</td><td>Playoffs</td></tr>
-              <tr><td>2024</td><td>IEM Dallas - SA Qualifier 1</td><td>Khronos E-Sports</td><td>Qualifier </td></tr>
-              <tr><td>2025</td><td>ESL Pro League Season 21</td><td>Khronos E-Sports</td><td>Open</td></tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section style="margin-top:18px">
-          <h3>Resumo de performance por mapa</h3>
-          <table>
-            <thead><tr><th>Mapa</th><th>KD</th><th>Rating</th><th>Win %</th></tr></thead>
-            <tbody>
-              <tr><td>Mirage</td><td>1.23</td><td>1.38</td><td>64%</td></tr>
-              <tr><td>Inferno</td><td>1.18</td><td>1.31</td><td>60%</td></tr>
-              <tr><td>Dust2</td><td>1.05</td><td>1.12</td><td>55%</td></tr>
-              <tr><td>Nuke</td><td>1.45</td><td>1.52</td><td>68%</td></tr>
-            </tbody>
-          </table>
-        </section>
-
-      </main>
     </div>
 
-    <footer>
-      Feito com ❤️ — Perfil pessoal do HLTV. 
-    </footer>
-  </div>
+    <div class="trophy">
+        <img alt="Troféu De Bronze Campeonato Local" src="1.png"/>
+        <div>
+            <div style="font-weight:700">Troféu De Bronze Campeonato Local</div>
+        </div>
+    </div>
 
-  <script>
-    // Sample matches data (you can replace with real match data or connect to a JSON file)
-    const matches = [
-      {date:'2025-07-30',event:'DreamHack Open',opp:'Team Razor',res:'W 2-1',rating:'1.42'},
-      {date:'2025-07-15',event:'ESL Challenger',opp:'BlueFangs',res:'W 2-0',rating:'1.25'},
-      {date:'2025-06-10',event:'Local Cup',opp:'AlphaCore',res:'L 1-2',rating:'0.92'},
-      {date:'2025-05-02',event:'Minor Qualifier',opp:'Storm',res:'W 2-0',rating:'1.37'}
-    ];
+    <div class="trophy">
+        <img alt="Troféu de Bronze ibirapuera" src="2.png"/>
+        <div>
+            <div style="font-weight:700">Troféu de Bronze ibirapuera</div>
+        </div>
+    </div>
 
-    const tbody = document.getElementById('matches');
-    matches.forEach(m=>{
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${m.date}</td><td>${m.event}</td><td>${m.opp}</td><td>${m.res}</td><td>${m.rating}</td>`;
-      tbody.appendChild(tr);
+    <div class="trophy">
+        <img alt="Troféu de Prata São Paulo CS:GO" src="3.png"/>
+        <div>
+            <div style="font-weight:700">Troféu de Prata São Paulo CS:GO</div>
+        </div>
+    </div>
+</div>
+</div>
+</aside>
+<main class="main">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="font-size:20px;font-weight:700">Perfil do jogador</div>
+<div style="color:var(--muted)">Perfil reproduzido apenas para uso pessoal</div>
+</div>
+<div class="stat-row" style="margin-top:12px">
+<div class="stat"><div class="num">1.20</div><div class="label">Rating</div></div>
+<div class="stat"><div class="num">62%</div><div class="label">Win Rate</div></div>
+<div class="stat"><div class="num">412</div><div class="label">Matches</div></div>
+<div class="stat"><div class="num">28%</div><div class="label">HS%</div></div>
+</div>
+<div class="tabs">
+<div class="tab active">Overview</div>
+<div class="tab">Matches</div>
+<div class="tab">Statistics</div>
+<div class="tab">History</div>
+</div>
+<div class="box">
+<h3 style="margin:0 0 12px 0">Últimas partidas</h3>
+<table id="matches">
+<thead><tr><th>Data</th><th>Evento</th><th>Oponente</th><th>Resultado</th><th>Rating</th></tr></thead>
+<tbody>
+<tr><td>2025-07-30</td><td>DreamHack Open</td><td>Team Razor</td><td>W 2-1</td><td>1.42</td></tr>
+<tr><td>2025-07-15</td><td>ESL Challenger</td><td>BlueFangs</td><td>W 2-0</td><td>1.25</td></tr>
+<tr><td>2025-06-10</td><td>Local Cup</td><td>AlphaCore</td><td>L 1-2</td><td>0.92</td></tr>
+<tr><td>2025-05-02</td><td>Minor Qualifier</td><td>Storm</td><td>W 2-0</td><td>1.37</td></tr>
+</tbody>
+</table><div class="box" style="margin-top:12px"><h3>Participações em torneios (registradas)</h3><table><thead><tr><th>Ano</th><th>Torneio</th><th>Equipe</th><th>Colocação</th></tr></thead><tbody><tr><td>2017</td><td>Microcamp 2017</td><td>Khronos E-Sports</td><td>Top 1</td></tr><tr><td>2018</td><td>FACEIT League 2018</td><td>Khronos E-Sports</td><td>Playoffs</td></tr><tr><td>2024</td><td>IEM Dallas - SA Qualifier 1</td><td>Khronos E-Sports</td><td>Qualifier</td></tr><tr><td>2025</td><td>ESL Pro League Season 21</td><td>Khronos E-Sports</td><td>Open</td></tr></tbody></table></div>
+</div>
+<div class="box" style="margin-top:12px">
+<h3 style="margin:0 0 12px 0">Performance por mapa</h3>
+<table>
+<thead><tr><th>Mapa</th><th>KD</th><th>Rating</th><th>Win %</th></tr></thead>
+<tbody>
+<tr><td>Mirage</td><td>1.23</td><td>1.38</td><td>64%</td></tr>
+<tr><td>Inferno</td><td>1.18</td><td>1.31</td><td>60%</td></tr>
+<tr><td>Dust2</td><td>1.05</td><td>1.12</td><td>55%</td></tr>
+<tr><td>Nuke</td><td>1.45</td><td>1.52</td><td>68%</td></tr>
+</tbody>
+</table>
+</div>
+<!-- Gráfico e Informações Pessoais -->
+<div class="box" style="margin-top:20px; display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap">
+    <!-- Coluna do Gráfico -->
+    <div style="flex:1; min-width:300px">
+        <h3 style="margin:0 0 12px 0">Evolução de Estatísticas</h3>
+        <canvas id="lineChart" style="max-height:300px"></canvas>
+    </div>
+
+    <!-- Coluna das Informações -->
+    <div style="flex:1; min-width:250px">
+        <h3 style="margin:0 0 12px 0">𝗜𝗻𝗳𝗼𝗿𝗺𝗮𝗰𝗼𝗲𝘀 𝗽𝗲𝘀𝘀𝗼𝗮𝗶𝘀</h3>
+        <p>𝗡𝗼𝗺𝗲: 𝗟𝗲𝗼𝗻𝗮𝗿𝗱𝗼</p>
+        <p>𝗜𝗱𝗮𝗱𝗲: 𝟮𝟮 𝗮𝗻𝗼𝘀</p>
+        <p>𝗔𝗹𝘁𝘂𝗿𝗮: 𝟭,𝟳𝟴 𝗺</p>
+        <p>𝗦𝗲𝘅𝗼: 𝗠𝗮𝘀𝗰𝘂𝗹𝗶𝗻𝗼</p>
+        <p>𝗣𝗿𝗼𝗳𝗶𝘀𝗮̃𝗼: 𝗧𝗲𝗰𝗻𝗶𝗰𝗼 𝗲𝗺 𝗜𝗻𝗳𝗼𝗿𝗺𝗮́𝘁𝗶𝗰𝗮</p>
+        <p>𝗡𝗮𝗰𝗶𝗼𝗻𝗮𝗹𝗶𝗱𝗮𝗱𝗲: 𝗕𝗿𝗮𝘀𝗶𝗹𝗲𝗶𝗿𝗮</p>
+        <p>𝗘𝘀𝘁𝗮𝗱𝗼: 𝗦𝗮𝗼 𝗣𝗮𝘂𝗹𝗼</p>
+        <p>𝗜𝗱𝗶𝗼𝗺𝗮𝘀: 𝗣𝗼𝗿𝘁𝘂𝗴𝘂𝗲𝘀</p>
+        <p><a href="https://gamebanana.com/scripts/12370" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:bold;">TwoTap CFG</a></p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctxLine = document.getElementById('lineChart').getContext('2d');
+    new Chart(ctxLine, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+            datasets: [
+                {
+                    label: 'Rating',
+                    data: [1.05, 1.10, 1.15, 1.18, 1.19, 1.20, 1.20],
+                    borderColor: 'rgba(0, 180, 255, 1)',
+                    backgroundColor: 'rgba(0, 180, 255, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Win Rate (%)',
+                    data: [55, 58, 60, 61, 62, 62, 62],
+                    borderColor: 'rgba(40, 200, 80, 1)',
+                    backgroundColor: 'rgba(40, 200, 80, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#e6eef6' }
+                },
+                x: {
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#e6eef6' }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: { color: '#e6eef6' }
+                }
+            }
+        }
     });
-
-    // If you want to export this to shareable JSON or add more features, you can
-    // add a small admin form here to edit fields and save to localStorage / download JSON.
-  </script>
+</script>
+</main>
+</div>
+<footer>
+      Feito com HLTV — Profile no HLTV.org — Uso pessoal apenas.
+    </footer>
+</div>
 </body>
 </html>
-
 <section id="ultimas-partidas" style="margin-top:40px;">
-  <h2>Últimas partidas jogadas</h2>
-  <p>Veja seu histórico detalhado de partidas no <a href="https://csstats.gg/player/76561198819777034#/matches" target="_blank" rel="noopener noreferrer">csstats.gg</a>.</p>
+<h2>Últimas partidas jogadas</h2>
+<p>Veja seu histórico detalhado de partidas no <a href="https://csstats.gg/player/76561198819777034#/matches" rel="noopener noreferrer" target="_blank">csstats.gg</a>.</p>
 </section>
